@@ -1,23 +1,13 @@
 import discord
 from discord.ext import commands
-import os
 import re
-from dotenv import load_dotenv
-import openai_utils as gpt
+import discord_utils
+import openai_utils
 
-# .envファイルから環境変数を読み取る
-load_dotenv()
 
-# 環境変数から以下を取得
-DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-
-intents = discord.Intents.default()
-intents.messages = True
-intents.message_content = True
-intents.voice_states = True
-bot = commands.Bot(command_prefix="/", intents=intents)
-
-openai_client = gpt.OpenAiClient()
+discord_client = discord_utils.DiscordClient()
+openai_client = openai_utils.OpenAiClient()
+bot = discord_client.get_bot()
 
 
 @bot.event
@@ -57,6 +47,7 @@ async def join(ctx: commands.Context) -> None:
     """
     if ctx.author.voice:
         channel = ctx.author.voice.channel
+        await channel.connect()
         await ctx.send(f'ボイスチャンネル"{channel.name}"に参加しました')
     else:
         await ctx.send("あなたはまだボイスチャンネルに接続していません")
@@ -64,6 +55,12 @@ async def join(ctx: commands.Context) -> None:
 
 @bot.command()
 async def hey(ctx: commands.Context, *, text: str) -> None:
+    """テキストに対する応答を音声で実施するための関数
+
+    Args:
+        ctx (commands.Context): コンテキストオブジェクト
+        text (str): AIに投げるテキスト
+    """
     if ctx.voice_client:
         reply_message = openai_client.send_message(ctx.author.id, text)
         reply_voice_filename = openai_client.text_to_speech(reply_message)
@@ -84,4 +81,5 @@ async def bye(ctx: commands.Context) -> None:
         await ctx.voice_client.disconnect()
 
 
-bot.run(DISCORD_TOKEN)
+if __name__ == "__main__":
+    bot.run(discord_client.DISCORD_TOKEN)

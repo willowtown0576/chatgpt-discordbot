@@ -57,28 +57,7 @@ async def join(ctx: commands.Context) -> None:
     """
     if ctx.author.voice:
         channel = ctx.author.voice.channel
-        try:
-            voice_client = await channel.connect()
-            await ctx.send(f'ボイスチャンネル"{channel.name}"に参加しました')
-            # while voice_client.is_connected():
-            #     if voice_client.is_paused():
-            #         continue
-            #     user_voice_filename = audio_utils.recording_audio(voice_client)
-            #     file_size = Path(user_voice_filename).stat().st_size
-            #     if file_size > 500:
-            #         user_voice_transcript = openai_client.speech_to_text(
-            #             user_voice_filename
-            #         )
-            #         reply_message = openai_client.send_message(
-            #             ctx.author.id, user_voice_transcript
-            #         )
-            #         reply_voice_filename = openai_client.text_to_speech(reply_message)
-            #         voice_client.play(
-            #             discord.FFmpegPCMAudio(reply_voice_filename),
-            #             after=lambda e: os.remove(reply_voice_filename),
-        except Exception as e:
-            await ctx.send(f"エラーが発生しました: {e}")
-            print(f"Error: {e}")
+        await ctx.send(f'ボイスチャンネル"{channel.name}"に参加しました')
     else:
         await ctx.send("あなたはまだボイスチャンネルに接続していません")
 

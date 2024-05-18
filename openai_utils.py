@@ -5,10 +5,16 @@ from openai import OpenAI
 
 
 class OpenAiClient:
+    """
+    OpenAIのサービス（テキスト生成、テキストから音声、音声からテキストへの変換）とやり取りを行うクライアント。
+    """
 
     SPEECH_FILENAME = "reply_voice.wav"
 
     def __init__(self):
+        """
+        環境変数からAPIキーとモデル設定を読み込んでOpenAiClientを初期化します。
+        """
         load_dotenv()
         self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         self.GPT_MODEL = os.getenv("GPT_MODEL")
@@ -20,6 +26,16 @@ class OpenAiClient:
         self.user_conversations = {}
 
     def send_message(self, user_id: int, prompt_text: str) -> str:
+        """
+        OpenAI GPTモデルにメッセージを送信し、応答を返します。
+
+        Args:
+            user_id (int): メッセージを送信するユーザーのID。
+            prompt_text (str): GPTモデルに送信するテキストプロンプト。
+
+        Returns:
+            str: GPTモデルからの応答。
+        """
         if user_id not in self.user_conversations:
             self.user_conversations[user_id] = []
 
@@ -41,6 +57,15 @@ class OpenAiClient:
         return reply_message
 
     def text_to_speech(self, text: str) -> str:
+        """
+        テキストを音声に変換し、音声ファイルを保存します。
+
+        Args:
+            text (str): 音声に変換するテキスト。
+
+        Returns:
+            str: 保存された音声ファイルのファイル名。
+        """
         speech_file_path = Path(__file__).parent / OpenAiClient.SPEECH_FILENAME
         response = self.client.audio.speech.create(
             model=self.GPT_TTS_MODEL,
@@ -52,8 +77,17 @@ class OpenAiClient:
         return OpenAiClient.SPEECH_FILENAME
 
     def speech_to_text(self, audio_filename: str) -> str:
-        audio_file = open(audio_filename, "rb")
-        transcription = self.client.audio.transcriptions.create(
-            model=self.GPT_STT_MODEL, file=audio_file
-        )
+        """
+        音声ファイルから音声をテキストに変換します。
+
+        Args:
+            audio_filename (str): テキストに書き起こす音声ファイルのファイル名。
+
+        Returns:
+            str: 書き起こされたテキスト。
+        """
+        with open(audio_filename, "rb") as audio_file:
+            transcription = self.client.audio.transcriptions.create(
+                model=self.GPT_STT_MODEL, file=audio_file
+            )
         return transcription.text

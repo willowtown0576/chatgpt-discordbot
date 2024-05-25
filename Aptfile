@@ -18,3 +18,4 @@ pciutils
 pulseaudio
 libraw1394-doc
 xdg-utils
+libblas3

@@ -13,9 +13,7 @@ libxcb-xkb-dev
 ffmpeg-doc
 libasound2-plugins
 alsa-utils
-libnvcuvid1
 libnvidia-encode1
-libbluray-bdj
 jackd2
 libportaudio2
 pciutils

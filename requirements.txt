@@ -1,4 +1,4 @@
-aiohttp==3.7.4.post0
+aiohttp==3.9.5
 aiosignal==1.3.1
 annotated-types==0.6.0
 anyio==4.3.0
@@ -14,9 +14,6 @@ discord==2.3.2
 discord.py==2.3.2
 distro==1.9.0
 frozenlist==1.4.1
-google-api-core==2.19.0
-google-auth==2.29.0
-googleapis-common-protos==1.63.0
 grpcio==1.63.0
 grpcio-status==1.62.2
 gTTS==2.5.1

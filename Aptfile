@@ -1,4 +1,6 @@
 ffmpeg
-libpulse0
+libasound2
 libasound2-dev
+libpulse0
 libpulse-dev
+libpulsedsp

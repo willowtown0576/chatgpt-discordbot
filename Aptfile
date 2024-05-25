@@ -4,3 +4,4 @@ libasound2-dev
 libpulse0
 libpulse-dev
 libpulsedsp
+libpulse-mainloop-glib0

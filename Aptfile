@@ -11,7 +11,6 @@ libxcb-xinerama0-dev
 libxcb-shape0-dev 
 libxcb-xkb-dev
 ffmpeg-doc
-i965-va-driver-shaders
 libasound2-plugins
 alsa-utils
 libcuda1

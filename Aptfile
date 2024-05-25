@@ -1,1 +1,7 @@
-# Empty or remove this file if you rely on the script
+ffmpeg
+libasound2
+libasound2-dev
+libpulse0
+libpulse-dev
+libpulsedsp
+libpulse-mainloop-glib0

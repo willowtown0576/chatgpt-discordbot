@@ -1,12 +1,12 @@
 import discord
 from discord.ext import commands
 import re
-import discord_utils
-import openai_utils
+import discord_client as dc
+import openai_client as oc
 
 
-discord_client = discord_utils.DiscordClient()
-openai_client = openai_utils.OpenAiClient()
+discord_client = dc.DiscordClient()
+openai_client = oc.OpenAiClient()
 bot = discord_client.get_bot()
 
 
@@ -63,8 +63,10 @@ async def hey(ctx: commands.Context, *, text: str) -> None:
     """
     if ctx.voice_client:
         reply_message = openai_client.send_message(ctx.author.id, text)
-        reply_voice_filename = openai_client.text_to_speech(reply_message)
-        ctx.voice_client.play(discord.FFmpegPCMAudio(reply_voice_filename))
+        reply_message_audio = discord.FFmpegPCMAudio(
+            openai_client.text_to_speech(reply_message)
+        )
+        ctx.voice_client.play(reply_message_audio)
         await ctx.send(reply_message)
     else:
         await ctx.send("ボイスチャンネルに接続していません。")

@@ -92,6 +92,11 @@ async def image(ctx: commands.Context, *, prompt: str) -> None:
         prompt (str): 画像生成の際に使用するプロンプト
     """
     image_url = openai_client.generate_image(prompt)
+
+    if not image_url:
+        ctx.send("エラーが発生したため画像生成できませんでした")
+        return
+
     await ctx.send(image_url)
 
 

@@ -83,5 +83,17 @@ async def bye(ctx: commands.Context) -> None:
         await ctx.voice_client.disconnect()
 
 
+@bot.command()
+async def image(ctx: commands.Context, *, prompt: str) -> None:
+    """画像生成時に実行する関数
+
+    Args:
+        ctx (commands.Context): コンテキストオブジェクト
+        prompt (str): 画像生成の際に使用するプロンプト
+    """
+    image_url = openai_client.generate_image(prompt)
+    await ctx.send(image_url)
+
+
 if __name__ == "__main__":
     bot.run(discord_client.DISCORD_TOKEN)

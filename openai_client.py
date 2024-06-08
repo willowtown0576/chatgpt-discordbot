@@ -10,6 +10,7 @@ class OpenAiClient:
     """
 
     SPEECH_FILENAME = "reply_voice.wav"
+    IMAGE_FILE_SIZE = "1024x1024"
 
     def __init__(self):
         """
@@ -22,6 +23,7 @@ class OpenAiClient:
         self.GPT_TTS_MODEL = os.getenv("GPT_TTS_MODEL")
         self.GPT_VOICE = os.getenv("GPT_VOICE")
         self.GPT_STT_MODEL = os.getenv("GPT_STT_MODEL")
+        self.GPT_IMAGE_MODEL = os.getenv("GPT_IMAGE_MODEL")
         self.client = OpenAI(api_key=self.OPENAI_API_KEY)
         self.user_conversations = {}
 
@@ -91,3 +93,24 @@ class OpenAiClient:
                 model=self.GPT_STT_MODEL, file=audio_file
             )
         return transcription.text
+    
+    def generate_image(self, prompt: str) -> str:
+        """
+        受け取ったプロンプトから画像を生成し、そのURLを返します。
+
+        Args:
+            prompt (str): 画像生成の際に使用するプロンプト
+
+        Returns:
+            str: 画像のURL
+        """
+        response = self.client.images.generate(
+            model = self.GPT_IMAGE_MODEL,
+            prompt = prompt,
+            size = OpenAiClient.IMAGE_FILE_SIZE,
+            quality="standard",
+            n=1,
+        )
+
+        image_url = response.data[0].url
+        return image_url

@@ -102,15 +102,21 @@ class OpenAiClient:
             prompt (str): 画像生成の際に使用するプロンプト
 
         Returns:
-            str: 画像のURL
+            str: 画像のURL。エラーが発生した場合は空文字を返す。
         """
-        response = self.client.images.generate(
-            model = self.GPT_IMAGE_MODEL,
-            prompt = prompt,
-            size = OpenAiClient.IMAGE_FILE_SIZE,
-            quality="standard",
-            n=1,
-        )
-
-        image_url = response.data[0].url
-        return image_url
+        if not prompt:
+            return "プロンプトを入力してください。"
+        
+        try:
+            response = self.client.images.generate(
+                model = self.GPT_IMAGE_MODEL,
+                prompt = prompt,
+                size = OpenAiClient.IMAGE_FILE_SIZE,
+                quality="standard",
+                n=1,
+            )
+            image_url = response.data[0].url
+            return image_url
+        except Exception as e:
+            print(f'エラーが発生しました: {e}')
+            return
